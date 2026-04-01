@@ -16,7 +16,7 @@ export normalize!, is_normalized, num_qubits
 export I_GATE, X, Y, Z, H, S, T
 export Rx, Ry, Rz
 export CNOT, CZ, SWAP, iSWAP
-export controlled, tensor_product
+export controlled, tensor_product, is_unitary
 
 # Operations
 export apply, apply!
