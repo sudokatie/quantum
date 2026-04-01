@@ -7,4 +7,5 @@ using LinearAlgebra: I
     include("test_gates.jl")
     include("test_apply.jl")
     include("test_measure.jl")
+    include("test_entangle.jl")
 end
