@@ -8,4 +8,5 @@ using LinearAlgebra: I
     include("test_apply.jl")
     include("test_measure.jl")
     include("test_entangle.jl")
+    include("test_circuit.jl")
 end
