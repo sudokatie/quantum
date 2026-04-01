@@ -6,4 +6,5 @@ using LinearAlgebra: I
     include("test_state.jl")
     include("test_gates.jl")
     include("test_apply.jl")
+    include("test_measure.jl")
 end

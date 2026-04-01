@@ -20,7 +20,7 @@ export controlled, tensor_product, is_unitary
 
 # Operations
 export apply, apply!
-export measure, measure_qubit, probabilities, sample
+export measure, measure_qubit, probabilities, sample, expectation
 export tensor, partial_trace, concurrence, is_separable
 
 # Circuit
