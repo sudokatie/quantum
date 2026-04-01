@@ -9,4 +9,5 @@ using LinearAlgebra: I
     include("test_measure.jl")
     include("test_entangle.jl")
     include("test_circuit.jl")
+    include("test_execute.jl")
 end
