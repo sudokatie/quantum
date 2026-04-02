@@ -132,6 +132,21 @@ const iSWAP = ComplexF64[
 ]
 
 """
+Toffoli (CCNOT) gate - controlled-controlled-X.
+|110> -> |111>, |111> -> |110>, all others unchanged.
+"""
+const TOFFOLI = ComplexF64[
+    1 0 0 0 0 0 0 0
+    0 1 0 0 0 0 0 0
+    0 0 1 0 0 0 0 0
+    0 0 0 1 0 0 0 0
+    0 0 0 0 1 0 0 0
+    0 0 0 0 0 1 0 0
+    0 0 0 0 0 0 0 1
+    0 0 0 0 0 0 1 0
+]
+
+"""
     tensor_product(a::Matrix, b::Matrix) -> Matrix
 
 Compute Kronecker product of two matrices.

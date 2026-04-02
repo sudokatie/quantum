@@ -10,14 +10,29 @@ struct StateVector
     amplitudes::Vector{ComplexF64}
     n_qubits::Int
     
-    function StateVector(amplitudes::Vector{ComplexF64})
+    function StateVector(amplitudes::Vector{ComplexF64}; normalize::Bool=true)
         n = length(amplitudes)
         # Check power of 2
         n_qubits = round(Int, log2(n))
         if 2^n_qubits != n
             error("Amplitude vector length must be power of 2, got $n")
         end
-        new(amplitudes, n_qubits)
+        # Enforce maximum 20 qubits per spec
+        if n_qubits > 20
+            error("Maximum 20 qubits supported, got $n_qubits")
+        end
+        # Auto-normalize per spec
+        if normalize
+            norm_factor = sqrt(sum(abs2, amplitudes))
+            if norm_factor > 1e-15
+                normalized = amplitudes ./ norm_factor
+                new(normalized, n_qubits)
+            else
+                new(amplitudes, n_qubits)
+            end
+        else
+            new(amplitudes, n_qubits)
+        end
     end
 end
 
@@ -27,9 +42,12 @@ end
 Create the |0>^n state (all qubits in |0>).
 """
 function zero_state(n::Int)
+    if n > 20
+        error("Maximum 20 qubits supported, got $n")
+    end
     amps = zeros(ComplexF64, 2^n)
     amps[1] = 1.0
-    StateVector(amps)
+    StateVector(amps; normalize=false)
 end
 
 """
@@ -38,9 +56,12 @@ end
 Create the |1>^n state (all qubits in |1>).
 """
 function one_state(n::Int)
+    if n > 20
+        error("Maximum 20 qubits supported, got $n")
+    end
     amps = zeros(ComplexF64, 2^n)
     amps[end] = 1.0
-    StateVector(amps)
+    StateVector(amps; normalize=false)
 end
 
 """
@@ -50,12 +71,15 @@ Create computational basis state |index> for n qubits.
 Index is 0-based (0 to 2^n - 1).
 """
 function basis_state(n::Int, index::Int)
+    if n > 20
+        error("Maximum 20 qubits supported, got $n")
+    end
     if index < 0 || index >= 2^n
         error("Index $index out of range for $n qubits")
     end
     amps = zeros(ComplexF64, 2^n)
     amps[index + 1] = 1.0
-    StateVector(amps)
+    StateVector(amps; normalize=false)
 end
 
 """

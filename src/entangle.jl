@@ -128,6 +128,16 @@ function is_separable(state::StateVector; tol=1e-6)
 end
 
 """
+    is_entangled(state::StateVector; tol=1e-6) -> Bool
+
+Check if a 2-qubit state is entangled (not separable).
+Uses concurrence: entangled iff concurrence > 0.
+"""
+function is_entangled(state::StateVector; tol=1e-6)
+    !is_separable(state; tol=tol)
+end
+
+"""
     von_neumann_entropy(rho::Matrix{ComplexF64}) -> Float64
 
 Calculate von Neumann entropy: S = -Tr(ρ log₂ ρ).

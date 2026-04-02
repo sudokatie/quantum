@@ -111,4 +111,36 @@
         s = apply(s, X, 3)  # |011>
         @test isapprox(s[4], 1, atol=1e-10)  # Index 4 = binary 011
     end
+    
+    @testset "apply_controlled" begin
+        # apply_controlled with single control = CNOT
+        s = basis_state(2, 2)  # |10>
+        s = apply_controlled(s, X, [1], [2])
+        @test isapprox(s[4], 1, atol=1e-10)  # |11>
+        
+        # Control not set, no change
+        s = basis_state(2, 0)  # |00>
+        s = apply_controlled(s, X, [1], [2])
+        @test isapprox(s[1], 1, atol=1e-10)  # Still |00>
+        
+        # Toffoli-like: two controls
+        s = basis_state(3, 6)  # |110>
+        s = apply_controlled(s, X, [1, 2], [3])
+        @test isapprox(s[8], 1, atol=1e-10)  # |111>
+        
+        # Only one control set, no flip
+        s = basis_state(3, 4)  # |100>
+        s = apply_controlled(s, X, [1, 2], [3])
+        @test isapprox(s[5], 1, atol=1e-10)  # Still |100>
+    end
+    
+    @testset "qubit limit" begin
+        # 20 qubits should work
+        @test_nowarn zero_state(20)
+        
+        # 21 qubits should fail
+        @test_throws ErrorException zero_state(21)
+        @test_throws ErrorException one_state(21)
+        @test_throws ErrorException basis_state(21, 0)
+    end
 end

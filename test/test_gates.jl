@@ -84,6 +84,31 @@
         @test is_unitary(iSWAP)
     end
     
+    @testset "Toffoli gate" begin
+        @test size(TOFFOLI) == (8, 8)
+        @test is_unitary(TOFFOLI)
+        
+        # |110> -> |111>
+        ket110 = zeros(ComplexF64, 8)
+        ket110[7] = 1.0  # 110 in binary is 6, 0-indexed
+        ket111 = zeros(ComplexF64, 8)
+        ket111[8] = 1.0  # 111 in binary is 7, 0-indexed
+        @test TOFFOLI * ket110 == ket111
+        
+        # |111> -> |110>
+        @test TOFFOLI * ket111 == ket110
+        
+        # |100> unchanged (only one control is 1)
+        ket100 = zeros(ComplexF64, 8)
+        ket100[5] = 1.0
+        @test TOFFOLI * ket100 == ket100
+        
+        # |000> unchanged
+        ket000 = zeros(ComplexF64, 8)
+        ket000[1] = 1.0
+        @test TOFFOLI * ket000 == ket000
+    end
+    
     @testset "CNOT behavior" begin
         # |00> -> |00>
         ket00 = ComplexF64[1, 0, 0, 0]

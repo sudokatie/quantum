@@ -35,7 +35,13 @@
         s = zero_state(1)
         @test is_normalized(s)
         
-        unnorm = StateVector(ComplexF64[2.0, 0.0])
+        # Test auto-normalization (default behavior per spec)
+        auto_norm = StateVector(ComplexF64[2.0, 0.0])
+        @test is_normalized(auto_norm)
+        @test abs(auto_norm[1] - 1.0) < 1e-10
+        
+        # Test explicit non-normalization
+        unnorm = StateVector(ComplexF64[2.0, 0.0]; normalize=false)
         @test !is_normalized(unnorm)
         normalize!(unnorm)
         @test is_normalized(unnorm)

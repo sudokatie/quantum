@@ -147,3 +147,55 @@ function apply!(state::StateVector, gate::Matrix{ComplexF64}, target::Int)
     
     state
 end
+
+"""
+    apply_controlled(state::StateVector, gate::Matrix{ComplexF64}, 
+                     controls::Vector{Int}, targets::Vector{Int}) -> StateVector
+
+Apply a controlled gate to the state.
+Gate is applied to targets only when all control qubits are |1>.
+"""
+function apply_controlled(state::StateVector, gate::Matrix{ComplexF64},
+                          controls::Vector{Int}, targets::Vector{Int})
+    @assert size(gate) == (2, 2) "Controlled gates must use single-qubit base gate"
+    @assert all(1 .<= controls .<= state.n_qubits) "Control qubits out of range"
+    @assert all(1 .<= targets .<= state.n_qubits) "Target qubits out of range"
+    @assert isempty(intersect(controls, targets)) "Controls and targets must not overlap"
+    
+    n = state.n_qubits
+    dim = 2^n
+    new_amps = copy(state.amplitudes)
+    
+    # For each basis state, check if all controls are 1
+    for i in 0:(dim - 1)
+        # Check all controls are 1
+        all_controls_set = true
+        for c in controls
+            bit_pos = n - c
+            if (i >> bit_pos) & 1 == 0
+                all_controls_set = false
+                break
+            end
+        end
+        
+        if !all_controls_set
+            continue
+        end
+        
+        # Apply single-qubit gate to each target
+        for t in targets
+            bit_pos = n - t
+            if (i >> bit_pos) & 1 == 0
+                j = i | (1 << bit_pos)
+                
+                a0 = state.amplitudes[i + 1]
+                a1 = state.amplitudes[j + 1]
+                
+                new_amps[i + 1] = gate[1,1] * a0 + gate[1,2] * a1
+                new_amps[j + 1] = gate[2,1] * a0 + gate[2,2] * a1
+            end
+        end
+    end
+    
+    StateVector(new_amps; normalize=false)
+end

@@ -102,6 +102,26 @@ using LinearAlgebra: tr, eigvals
         @test !is_separable(s)
     end
     
+    @testset "is_entangled" begin
+        # Product states are not entangled
+        s = zero_state(2)
+        @test !is_entangled(s)
+        
+        s = basis_state(2, 3)  # |11>
+        @test !is_entangled(s)
+        
+        # Bell state is entangled
+        s = zero_state(2)
+        s = apply(s, H, 1)
+        s = apply(s, CNOT, [1, 2])
+        @test is_entangled(s)
+        
+        # is_entangled should be opposite of is_separable
+        plus = apply(zero_state(1), H, 1)
+        s = tensor(plus, zero_state(1))
+        @test is_separable(s) == !is_entangled(s)
+    end
+    
     @testset "von_neumann_entropy" begin
         # Pure state has entropy 0
         rho = ComplexF64[1 0; 0 0]

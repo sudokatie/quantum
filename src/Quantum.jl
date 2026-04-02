@@ -15,13 +15,13 @@ export normalize!, is_normalized, num_qubits
 # Gates
 export I_GATE, X, Y, Z, H, S, T
 export Rx, Ry, Rz
-export CNOT, CZ, SWAP, iSWAP
+export CNOT, CZ, SWAP, iSWAP, TOFFOLI
 export controlled, tensor_product, is_unitary
 
 # Operations
-export apply, apply!
+export apply, apply!, apply_controlled
 export measure, measure_qubit, probabilities, sample, expectation
-export tensor, partial_trace, concurrence, is_separable, purity, von_neumann_entropy
+export tensor, partial_trace, concurrence, is_separable, is_entangled, purity, von_neumann_entropy
 
 # Circuit
 export Operation, Circuit
