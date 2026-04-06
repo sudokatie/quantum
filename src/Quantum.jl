@@ -33,6 +33,11 @@ export execute, execute_and_measure, simulate
 # Visualization
 export show_circuit, show_state, show_probabilities, show_bloch
 
+# Noise models
+export NoiseModel, DepolarizingNoise, AmplitudeDampingNoise, PhaseDampingNoise, MeasurementNoise, CompositeNoise
+export apply_noise, apply_noise_all, noisy_measure, noisy_measure_qubit
+export depolarizing, amplitude_damping, phase_damping, measurement_error, compose, noise_level
+
 # Include source files (created in subsequent tasks)
 include("state.jl")
 include("gates.jl")
@@ -42,5 +47,6 @@ include("entangle.jl")
 include("circuit.jl")
 include("execute.jl")
 include("visualize.jl")
+include("noise.jl")
 
 end # module
