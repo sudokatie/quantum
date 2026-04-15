@@ -38,6 +38,13 @@ export NoiseModel, DepolarizingNoise, AmplitudeDampingNoise, PhaseDampingNoise, 
 export apply_noise, apply_noise_all, noisy_measure, noisy_measure_qubit
 export depolarizing, amplitude_damping, phase_damping, measurement_error, compose, noise_level
 
+# Optimization algorithms (VQE, QAOA)
+export Hamiltonian, hamiltonian, expectation_value, pauli_expectation
+export VariationalCircuit, variational_circuit, num_parameters, build_ansatz
+export OptimizationResult, nelder_mead, vqe
+export QAOACircuit, qaoa_circuit, build_qaoa, qaoa, maxcut_hamiltonian, standard_mixer
+export qaoa_maxcut, sample_qaoa_solution
+
 # Include source files (created in subsequent tasks)
 include("state.jl")
 include("gates.jl")
@@ -48,5 +55,6 @@ include("circuit.jl")
 include("execute.jl")
 include("visualize.jl")
 include("noise.jl")
+include("optimizer.jl")
 
 end # module

@@ -12,4 +12,5 @@ using LinearAlgebra: I
     include("test_execute.jl")
     include("test_visualize.jl")
     include("test_examples.jl")
+    include("test_optimizer.jl")
 end
