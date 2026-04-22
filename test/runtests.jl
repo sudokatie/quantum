@@ -13,4 +13,5 @@ using LinearAlgebra: I
     include("test_visualize.jl")
     include("test_examples.jl")
     include("test_optimizer.jl")
+    include("test_qpe.jl")
 end
